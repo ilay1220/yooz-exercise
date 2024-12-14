@@ -1,6 +1,6 @@
 <p>SignUp:</p>
 
-<form (ngsubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div>
         <input type="text" placeholder="Username" formControlName="username">       
     </div>
@@ -11,6 +11,9 @@
         <input type="password" placeholder="Password" formControlName="password">       
     </div>
     <div>
-        <button>Submit</button>
+        <button type="submit">Sign Up</button>
+    </div>
+    <div *ngIf="errorMessage" class="error">
+        {{ errorMessage }}
     </div>
 </form>

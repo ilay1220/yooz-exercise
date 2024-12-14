@@ -1,14 +1,25 @@
 <p>Login:</p>
 
-<form (ngsubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div>
-        <input type="text" placeholder="Username" formControlName="username">       
+        <input type="text" placeholder="Email" formControlName="email">       
     </div>
     <div>
         <input type="password" placeholder="Password" formControlName="password">       
     </div>
     <div>
-        <button>Submit</button>
+        <button type="submit">Login</button>
     </div>
+    <div *ngIf="errorMessage" class="error">
+        {{ errorMessage }}
+    </div>
+    <div>
+        <button class="google-btn" (click)="onGoogleLogin()">
+            <img src="../assets/img/google_logo.png" alt="Google logo"
+            class="google-logo" width="50px" height="50px">
+            Login with Google
+          </button>
+    </div>
+    
 </form>
 

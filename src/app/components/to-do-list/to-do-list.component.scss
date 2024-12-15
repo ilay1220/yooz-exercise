@@ -1,0 +1,69 @@
+/* כללי */
+h3 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      background-color: #e8e8e8;
+      transform: scale(1.02);
+    }
+  }
+  
+  h4 {
+    font-size: 20px;
+    color: #444;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+    margin-top: 5px;
+  
+    &.no-due-date {
+      color: #ff6347; /* צבע אדום קל אם אין תאריך */
+      font-style: italic;
+    }
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* עיצוב תאריך יעד */
+  p {
+    font-size: 16px;
+    color: #007bff;
+    margin-top: 10px;
+  }
+  
+  /* לעיצוב כל האלמנטים בצורה מודרנית */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    padding: 20px;
+  }
+  
+  div {
+    direction: rtl;
+  }

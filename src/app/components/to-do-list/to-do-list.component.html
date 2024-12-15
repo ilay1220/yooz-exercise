@@ -1,1 +1,72 @@
-<p>to-do-list works!</p>
+<div *ngIf="tasks.length === 0">
+    <p>אין משימות להציג.</p>
+</div>
+
+<div *ngIf="tasks.length > 0">
+    <h3>משימות שלי</h3>
+    <div>
+        <!-- Combobox לסינון משימות -->
+        <label for="statusFilter">פילטר:</label>
+        <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterTasks()">
+          <option value="all">הכל</option>
+          <option value="בהמתנה">בהמתנה</option>
+          <option value="בתהליך">בתהליך</option>
+          <option value="הושלם">הושלם</option>
+        </select>
+      </div>
+    <ul>
+        <li *ngFor="let task of filteredTasks">
+            <button (click)="deleteTask(task.id)" style="width: 20px; font-size: 10px;
+            background-color: red;">X</button>
+            <h4>
+                <input *ngIf="task.isEditingName" [(ngModel)]="task.name" (blur)="saveTaskName(task)" />
+                <span *ngIf="!task.isEditingName" (click)="editTaskName(task)">{{ task.name }}</span>
+            </h4>
+
+            <!-- סטטוס -->
+            <h5 style="color: orange;" (click)="toggleStatus(task)">
+                {{ task.status }}
+                <div *ngIf="this.showStatusOptions" class="status-options">
+                    <button (click)="changeStatus(task, 'בהמתנה')">בהמתנה</button>
+                    <button (click)="changeStatus(task, 'בתהליך')">בתהליך</button>
+                    <button (click)="changeStatus(task, 'הושלם')">הושלם</button>
+                </div>
+            </h5>          
+
+            <!-- עריכת תיאור -->
+            <p contenteditable="true" (blur)="updateTaskDescription(task, $event)">{{ task.description }}</p>
+
+            <!-- תאריך יעד -->
+            <p *ngIf="task.due_date">
+                <span *ngIf="!task.isEditingDate">{{ task.due_date | date: 'dd/MM/yyyy HH:mm' }}</span>
+                <input *ngIf="task.isEditingDate" type="datetime-local" [(ngModel)]="task.due_date" (change)="updateTaskDueDate(task)" />
+                <button *ngIf="!task.isEditingDate" (click)="editDueDate(task)">ערוך תאריך</button>
+            </p>
+
+            <p *ngIf="!task.due_date" class="no-due-date">
+                <button (click)="selectDueDate(task)">בחר תאריך יעד</button>
+            </p>
+        </li>
+    </ul>
+</div>
+
+<!-- כפתור הוספת משימה -->
+<div>
+    <button (click)="addTask()">הוסף משימה</button>
+</div>
+
+<!-- טופס הוספת משימה -->
+<div *ngIf="isAddingTask">
+    <h3>הוסף משימה חדשה</h3>
+    <label for="taskName">שם המשימה</label>
+    <input id="taskName" [(ngModel)]="newTask.name" placeholder="שם המשימה" />
+
+    <label for="taskDescription">תיאור המשימה</label>
+    <input id="taskDescription" [(ngModel)]="newTask.description" placeholder="תיאור המשימה" />
+
+    <label for="taskDueDate">תאריך יעד</label>
+    <input id="taskDueDate" type="datetime-local" [(ngModel)]="newTask.due_date" />
+
+    <button (click)="saveNewTask()">שמור משימה</button>
+    <button (click)="cancelAddTask()">ביטול</button>
+</div>

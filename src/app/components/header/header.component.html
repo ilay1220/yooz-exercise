@@ -1,8 +1,14 @@
-
 <header>
-    <button (click)="navigateTo('login')" class="loginBtn">Login Page</button>
-    <button (click)="navigateTo('signup')" class="signUpBtn">Sign Up Page</button>
-    <!--<nav>{{title()}}</nav>
-    <p>Hello World</p>--->
+    @if(authService.currentUserSignal() == null)
+    {
+        <button (click)="navigateTo('login')" class="loginBtn">Login Page</button>
+        <button (click)="navigateTo('signup')" class="signUpBtn">Sign Up Page</button>
+    }
+    @else
+    {
+        <button (click)="logout()" class="logoutBtn">Logout</button>
+        <button (click)="navigateTo('to-do-list')" class="to-do-listBtn">To Do</button>
+        <button (click)="navigateTo('update')" class="updateBtn">Update Page</button>
+    }
 </header>
 

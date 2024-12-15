@@ -1,5 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
+import { signOut } from 'firebase/auth'
+import { Observable, from } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +13,17 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   title = signal('My first APP that I made using Angular');
+  authService = inject(AuthService)
 
   constructor(private router: Router) {}
 
   navigateTo(path: string) {
     this.router.navigate([`/${path}`]);
+  }
+
+  logout()
+  {
+    this.authService.logout()
+    this.navigateTo('login')
   }
 }

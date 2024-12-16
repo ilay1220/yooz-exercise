@@ -1,0 +1,50 @@
+<div class="game-container rtl-content" *ngIf="!isGameOver; else gameOverTemplate">
+  <div class="game-header">
+    <button mat-fab color="primary" class="pause-button" (click)="pauseGame()" *ngIf="!isPaused">
+      <mat-icon>pause</mat-icon>
+    </button>
+  </div>
+
+  <h1 class="mat-display-1">ברוכים הבאים לשאלון!</h1>
+  <h2 class="mat-headline">שאלה {{ currentQuestionIndex + 1 }} מתוך {{ questions.length }}</h2>
+  
+  <div *ngIf="!isPaused" class="game-content">
+    <h3 class="mat-title">{{ questions[currentQuestionIndex]?.question }}</h3>
+  
+    <mat-list class="options-list">
+      <mat-list-item
+        *ngFor="let option of questions[currentQuestionIndex]?.options"
+        (click)="checkAnswer(option)"
+        class="option-item mat-elevation-z2"
+      >
+        {{ option }}
+      </mat-list-item>
+    </mat-list>
+  
+    <div class="timer-score mat-typography">
+      <p class="timer">זמן נותר: {{ timeLeft }} שניות</p>
+      <p class="score">ניקוד: {{ score }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="isPaused" class="paused-overlay">
+    <div class="paused-content">
+      <mat-icon class="pause-icon">pause_circle</mat-icon>
+      <h2 class="mat-headline">המשחק מושהה</h2>
+      <p class="mat-body-1">לחץ על כפתור ההפעלה כדי להמשיך</p>
+      <button mat-fab color="primary" class="resume-button" (click)="resumeGame()">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #gameOverTemplate>
+  <div class="game-over">
+    <h1 class="mat-display-2">המשחק נגמר!</h1>
+    <h2 class="mat-headline">הניקוד הסופי שלך: {{ score }}</h2>
+    <button mat-raised-button class="restart-button" (click)="resetGame()">
+      שחק שוב
+    </button>
+  </div>
+</ng-template>

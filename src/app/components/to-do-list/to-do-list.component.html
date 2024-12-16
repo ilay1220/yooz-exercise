@@ -1,0 +1,138 @@
+<div *ngIf="isAddingTask" class="add-task-form">
+  <h3>הוסף משימה חדשה</h3>
+  <mat-form-field>
+    <mat-label>שם משימה</mat-label>
+    <input matInput [(ngModel)]="newTask.name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>תיאור משימה</mat-label>
+    <textarea matInput [(ngModel)]="newTask.description"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>תאריך יעד</mat-label>
+    <input matInput [matDatepicker]="newTaskPicker" [(ngModel)]="newTask.due_date" />
+    <mat-datepicker-toggle matSuffix [for]="newTaskPicker"></mat-datepicker-toggle>
+    <mat-datepicker #newTaskPicker></mat-datepicker>
+  </mat-form-field>
+  
+  <!-- זמן: שעות, דקות ושניות -->
+  <div class="time-selection">
+    <mat-form-field>
+      <mat-label>שעה</mat-label>
+      <mat-select [(ngModel)]="newTask.due_hours">
+        <mat-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>דקה</mat-label>
+      <mat-select [(ngModel)]="newTask.due_minutes">
+        <mat-option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>שנייה</mat-label>
+      <mat-select [(ngModel)]="newTask.due_seconds">
+        <mat-option *ngFor="let second of seconds" [value]="second">{{ second }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-raised-button color="primary" (click)="saveNewTask()">שמור</button>
+    <button mat-raised-button color="warn" (click)="cancelAddTask()">בטל</button>
+  </div>
+</div>
+
+
+
+<div *ngIf="tasks.length === 0">
+  <p>אין משימות להציג.</p>
+</div>
+
+<div *ngIf="tasks.length > 0">
+  <h3 mat-header>המשימות שלי</h3>
+  <div>
+    <mat-form-field>
+      <mat-label>פילטר:</mat-label>
+      <mat-select id="statusFilter" [(ngModel)]="selectedStatus" (selectionChange)="filterTasks()">
+        <mat-option value="all">הכל</mat-option>
+        <mat-option value="בהמתנה">בהמתנה</mat-option>
+        <mat-option value="בתהליך">בתהליך</mat-option>
+        <mat-option value="הושלם">הושלם</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="task-list">
+    <mat-card *ngFor="let task of filteredTasks" class="task-card">
+      <mat-card-header>
+        <button mat-icon-button (click)="deleteTask(task.id)" class="delete-btn" aria-label="Delete Task">X</button>
+        <mat-card-title>
+          <input *ngIf="task.isEditingName" [(ngModel)]="task.name" (blur)="saveTaskName(task)" matInput />
+          <span *ngIf="!task.isEditingName" (click)="editTaskName(task)">{{ task.name }}</span>
+        </mat-card-title>
+      </mat-card-header>
+    
+      <mat-card-content>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              סטטוס: <span class="status-display">{{ task.status }}</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-action-row>
+            <button mat-button (click)="changeStatus(task, 'בהמתנה')">בהמתנה</button>
+            <button mat-button (click)="changeStatus(task, 'בתהליך')">בתהליך</button>
+            <button mat-button (click)="changeStatus(task, 'הושלם')">הושלם</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+    
+        <p contenteditable="true" (blur)="updateTaskDescription(task, $event)">{{ task.description }}</p>           
+        <!-- Editable Due Date with Time Selection -->
+        <mat-form-field appearance="fill">
+          <mat-label>תאריך יעד</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="task.due_date" (dateChange)="onDateChange(task)" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    
+        <!-- Time selection (hours, minutes, seconds) -->
+        <div class="time-selection">
+          <mat-form-field>
+            <mat-label>שעה</mat-label>
+            <mat-select [(ngModel)]="task.due_hours" (selectionChange)="onTimeChange(task)">
+              <mat-option *ngFor="let hour of hours" [value]="hour">
+                {{ hour.toString().padStart(2, '0') }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field>
+            <mat-label>דקה</mat-label>
+            <mat-select [(ngModel)]="task.due_minutes" (selectionChange)="onTimeChange(task)">
+              <mat-option *ngFor="let minute of minutes" [value]="minute">
+                {{ minute.toString().padStart(2, '0') }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field>
+            <mat-label>שנייה</mat-label>
+            <mat-select [(ngModel)]="task.due_seconds" (selectionChange)="onTimeChange(task)">
+              <mat-option *ngFor="let second of seconds" [value]="second">
+                {{ second.toString().padStart(2, '0') }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>          
+        </div>
+    
+      </mat-card-content>
+    </mat-card>    
+  </div>
+</div>
+
+
+<div>
+  <button mat-raised-button (click)="addTask()">הוסף משימה</button>
+</div>

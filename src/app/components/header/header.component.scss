@@ -1,15 +1,33 @@
-header{
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .app-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  mat-toolbar-row {
     display: flex;
-    padding-inline: 16px;
-    padding-block: 8px;
-    background-color: rgb(95, 94, 94);
     align-items: center;
-    justify-content: space-between;
-}
+    gap: 10px;
+  }
+  
+  .app-title {
+    color: purple;
+  }
 
-.signUpBtn, .loginBtn{
-    width: 250px;
-    height: 50px;
-    font-size: 35px;
-    color: blue($color: #45d7ff);
-}
+  .login-btn, .signup-btn, .todo-btn, .update-btn, .game-btn, .logout-btn {
+    margin-left: 10px;
+    
+    .mat-icon {
+      margin-right: 8px;
+    }
+  }

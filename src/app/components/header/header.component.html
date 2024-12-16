@@ -1,8 +1,38 @@
-
-<header>
-    <button (click)="navigateTo('login')" class="loginBtn">Login Page</button>
-    <button (click)="navigateTo('signup')" class="signUpBtn">Sign Up Page</button>
-    <!--<nav>{{title()}}</nav>
-    <p>Hello World</p>--->
-</header>
-
+<mat-toolbar color="primary" class="app-header">
+  <mat-toolbar-row>
+    <span class="app-title">{{ title }}</span>
+    <span class="spacer"></span>
+    
+    <!-- If the user is not authenticated, show the Login and Sign Up buttons -->
+    <ng-container *ngIf="authService.currentUserSignal() == null">
+      <button mat-raised-button color="accent" (click)="navigateTo('login')" class="login-btn">
+        <mat-icon>login</mat-icon>
+        Login
+      </button>
+      <button mat-raised-button color="accent" (click)="navigateTo('signup')" class="signup-btn">
+        <mat-icon>person_add</mat-icon>
+        Sign Up
+      </button>
+    </ng-container>
+    
+    <!-- If the user is authenticated, show the other buttons -->
+    <ng-container *ngIf="authService.currentUserSignal() != null">
+      <button mat-raised-button color="primary" (click)="navigateTo('to-do-list')" class="todo-btn">
+        <mat-icon>checklist</mat-icon>
+        To Do
+      </button>
+      <button mat-raised-button color="primary" (click)="navigateTo('update')" class="update-btn">
+        <mat-icon>edit</mat-icon>
+        Update
+      </button>
+      <button mat-raised-button color="primary" (click)="navigateTo('puzzle-game')" class="game-btn">
+        <mat-icon>games</mat-icon>
+        Game
+      </button>
+      <button mat-raised-button color="warn" (click)="logout()" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </ng-container>
+  </mat-toolbar-row>
+</mat-toolbar>

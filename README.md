@@ -1,59 +1,57 @@
-# YoozExercise
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
+# Management Website
 
-## Development server
+This project is an Angular-based management website. It integrates with Firebase for backend services and is designed to help manage and organize tasks, users, and other resources in a user-friendly interface.
 
-To start a local development server, run:
+## Prerequisites
 
-```bash
-ng serve
-```
+Before running the project, ensure you have the following installed:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+- [Angular CLI](https://angular.io/cli)
+- Firebase project for authentication and backend services
 
-## Code scaffolding
+## Installation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Clone this repository to your local machine:
 
-```bash
-ng generate component component-name
-```
+   ```bash
+   git clone <repository_url>
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. Navigate to the project directory:
 
-```bash
-ng generate --help
-```
+   ```bash
+   cd <project_directory>
+   ```
 
-## Building
+3. Install the required dependencies:
 
-To build the project run:
+   ```bash
+   npm install
+   ```
 
-```bash
-ng build
-```
+4. Install Firebase and Angular Fire:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+   ```bash
+   npm install firebase @angular/fire
+   ```
 
-## Running unit tests
+## Running the Project
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+1. To serve the application locally, run:
 
-```bash
-ng test
-```
+   ```bash
+   ng serve
+   ```
 
-## Running end-to-end tests
+2. Open your browser and go to `http://localhost:4200/` to view the application.
 
-For end-to-end (e2e) testing, run:
+## Configuration
 
-```bash
-ng e2e
-```
+Make sure you configure Firebase by updating the Firebase credentials in the appropriate files. You can obtain the Firebase config details from your Firebase console.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## License
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,45 +1,38 @@
-<div class="signup-container">
-    <mat-card class="signup-card">
-      <mat-card-title class="signup-title">Sign Up</mat-card-title>
+<div class="update-container">
+    <mat-card class="update-card">
+      <mat-card-title class="update-title">Update</mat-card-title>
   
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <!-- Username Field -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" placeholder="Enter your username" class="usernameInput">
+          <input matInput formControlName="username" placeholder="Enter your username" class="usernameInput" />
           <mat-error *ngIf="form.get('username')?.hasError('required')">Username is required</mat-error>
         </mat-form-field>
   
         <!-- Email Field -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Email</mat-label>
-          <input matInput formControlName="email" placeholder="Enter your email" class="emailInput">
+          <input matInput formControlName="email" placeholder="Enter your email" class="emailInput" />
           <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
           <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email format.</mat-error>
         </mat-form-field>
   
-         <!-- Password Field -->
+        <!-- Password Field -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" placeholder="Enter your password" class="passInput">
+          <input matInput type="password" formControlName="password" placeholder="Enter your password" class="passInput" />
           <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
         </mat-form-field>
   
         <!-- Submit Button -->
         <div class="submit-btn-container">
-          <button mat-flat-button color="accent" type="submit" class="signup-btn">Sign Up</button>
+          <button mat-flat-button color="accent" type="submit" class="update-btn">Update</button>
         </div>
   
+        <!-- Error Message -->
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
-        </div>
-  
-        <!-- Google Sign-Up Button -->
-        <div class="google-signup">
-          <button mat-raised-button class="google-btn" (click)="onGoogleSignup()">
-            <img src="../assets/img/google_logo.png" alt="Google logo" class="google-logo">
-            Sign Up with Google
-          </button>
         </div>
       </form>
     </mat-card>

@@ -1,16 +1,25 @@
+<!-- Button to trigger task creation form -->
 <div>
   <button mat-raised-button (click)="addTask()">הוסף משימה</button>
 </div>
+
+<!-- Form to add a new task -->
 <div *ngIf="isAddingTask" class="add-task-form">
   <h3>הוסף משימה חדשה</h3>
+
+  <!-- Task Name Input -->
   <mat-form-field>
     <mat-label>שם משימה</mat-label>
     <input matInput [(ngModel)]="newTask.name" />
   </mat-form-field>
+
+  <!-- Task Description Input -->
   <mat-form-field>
     <mat-label>תיאור משימה</mat-label>
     <textarea matInput [(ngModel)]="newTask.description"></textarea>
   </mat-form-field>
+
+  <!-- Task Due Date Input -->
   <mat-form-field>
     <mat-label>תאריך יעד</mat-label>
     <input matInput [matDatepicker]="newTaskPicker" [(ngModel)]="newTask.due_date" />
@@ -18,7 +27,7 @@
     <mat-datepicker #newTaskPicker></mat-datepicker>
   </mat-form-field>
   
-  <!-- זמן: שעות, דקות ושניות -->
+  <!-- Time Selection: Hours, Minutes, Seconds -->
   <div class="time-selection">
     <mat-form-field>
       <mat-label>שעה</mat-label>
@@ -42,6 +51,7 @@
     </mat-form-field>
   </div>
 
+  <!-- Action Buttons for Task Creation -->
   <div>
     <button mat-raised-button color="primary" (click)="saveNewTask()">שמור</button>
     <button mat-raised-button color="warn" (click)="cancelAddTask()">בטל</button>
@@ -49,14 +59,17 @@
 </div>
 
 
-
+<!-- No Tasks Message -->
 <div *ngIf="tasks.length === 0">
   <p>אין משימות להציג.</p>
 </div>
 
+<!-- Task List -->
 <div *ngIf="tasks.length > 0">
   <h3 mat-header>המשימות שלי</h3>
   <h4 mat-header style="color: brown;">לחץ פעמיים על השם או על התיאור של כל משימה בשביל לשנות אותה</h4>
+
+  <!-- Filter Dropdown -->
   <div>
     <mat-form-field class="filterSelector">
       <mat-label>פילטר:</mat-label>
@@ -68,16 +81,21 @@
       </mat-select>
     </mat-form-field>
   </div>
+
+  <!-- Task Card List -->
   <div class="task-list">
     <mat-card *ngFor="let task of filteredTasks" class="task-card">
       <mat-card-header>
+        <!-- Delete Task Button -->
         <button mat-icon-button (click)="deleteTask(task.id)" class="delete-btn" aria-label="Delete Task">X</button>
+        <!-- Editable Task Name -->
         <mat-card-title>
           <input *ngIf="task.isEditingName" [(ngModel)]="task.name" (blur)="saveTaskName(task)" matInput />
           <span *ngIf="!task.isEditingName" (click)="editTaskName(task)">{{ task.name }}</span>
         </mat-card-title>
       </mat-card-header>
     
+       <!-- Task Content -->
       <mat-card-content>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -92,7 +110,9 @@
           </mat-action-row>
         </mat-expansion-panel>
     
-        <p contenteditable="true" (blur)="updateTaskDescription(task, $event)">{{ task.description }}</p>           
+         <!-- Editable Task Description -->
+        <p contenteditable="true" (blur)="updateTaskDescription(task, $event)">{{ task.description }}</p>    
+
         <!-- Editable Due Date with Time Selection -->
         <mat-form-field appearance="fill">
           <mat-label>תאריך יעד</mat-label>
@@ -101,7 +121,7 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     
-        <!-- Time selection (hours, minutes, seconds) -->
+        <!-- Time Selection for Existing Task -->
         <div class="time-selection">
           <mat-form-field>
             <mat-label>שעה</mat-label>

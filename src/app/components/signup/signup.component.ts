@@ -19,22 +19,26 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
+  // Inject dependencies
   authService = inject(AuthService);
   fb = inject(FormBuilder);
   router = inject(Router);
   errorMessage: string | null = null;
 
+  // Signup form with validation rules
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
 
+  // Submit the form
   onSubmit() {
     const rawForm = this.form.getRawValue();
     this.errorMessage = null; 
     this.authService.signup(rawForm.email, rawForm.username, rawForm.password)
       .subscribe({
+        // Navigate to Login page after successful login
         next: () => this.router.navigateByUrl('/login'),
         error: (err) => {
           console.error('Signup error:', err);
@@ -43,8 +47,10 @@ export class SignupComponent {
       });
   }
 
+  // Google Sign-Up Handler
   onGoogleSignup() {
     this.authService.loginWithGoogle().subscribe({
+      // Navigate to Login page after successful login
       next: () => this.router.navigateByUrl('/login'),
       error: (err) => {
         console.error('Google signup error:', err);
@@ -53,6 +59,7 @@ export class SignupComponent {
     });
   }
 
+   // Translates Firebase authentication error codes into user-friendly messages.
   private getErrorMessage(error: any): string {
     if (error?.code === 'auth/weak-password') {
       return 'Password should be at least 6 characters.';

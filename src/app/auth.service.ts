@@ -1,23 +1,27 @@
-import { inject, Injectable, signal } from "@angular/core"
-import { Auth, user } from "@angular/fire/auth"
-import { Firestore, collection, doc, setDoc } from "@angular/fire/firestore"
+import { inject, Injectable, signal } from "@angular/core";
+import { Auth, user } from "@angular/fire/auth";
+import { Firestore, collection, doc, setDoc } from "@angular/fire/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, 
     updateProfile, signInWithPopup, GoogleAuthProvider, signOut,
-    updateEmail, updatePassword} from "firebase/auth"
-import { Observable, from, of } from 'rxjs'
+    updateEmail, updatePassword} from "firebase/auth";
+import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { UserInterface } from "./user.interface"
+import { UserInterface } from "./user.interface";
 import { EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification } from 'firebase/auth';
 
-@Injectable ({
+@Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    firebaseAuth = inject(Auth)
-    firestore = inject(Firestore)
-    user$ = user(this.firebaseAuth)
-    currentUserSignal = signal<UserInterface | null | undefined>(undefined)
+    firebaseAuth = inject(Auth);
+    firestore = inject(Firestore);
+    user$ = user(this.firebaseAuth);
+    currentUserSignal = signal<UserInterface | null | undefined>(undefined);
 
+    /**
+     * Handles user signup, including Firebase authentication,
+     * updating the user profile, and saving user data to Firestore.
+     */
     signup(email: string, username: string, password: string): Observable<void> {
       return from(createUserWithEmailAndPassword(
           this.firebaseAuth, 
@@ -44,8 +48,11 @@ export class AuthService {
               throw error;
           })
       );
-  }
+    }
 
+    /**
+     * Logs in a user with email and password.
+     */
     login(email: string, password: string) : Observable<void> {
         const promise = signInWithEmailAndPassword(
             this.firebaseAuth, 
@@ -55,11 +62,13 @@ export class AuthService {
         return from(promise);
     }
 
+    /**
+     * Logs in a user with Google authentication and saves user info to Firestore if not exists.
+     */
     loginWithGoogle(): Observable<void> {
         const provider = new GoogleAuthProvider();
         const promise = signInWithPopup(this.firebaseAuth, provider)
             .then(async (response) => {
-                // For Google signup, save user info to Firestore if not exists
                 if (response.user) {
                     const userRef = doc(collection(this.firestore, 'users'), response.user.uid);
                     await setDoc(userRef, {
@@ -72,6 +81,9 @@ export class AuthService {
         return from(promise);
     }
 
+    /**
+     * Logs out the currently authenticated user and clears the current user signal.
+     */
     logout(): Observable<void> {
       const promise = signOut(this.firebaseAuth).then(() => {
           this.currentUserSignal.set(null);
@@ -79,6 +91,10 @@ export class AuthService {
       return from(promise);
     }  
 
+    /**
+     * Updates user information: email, username, and/or password.
+     * Handles reauthentication for email updates and updates Firestore.
+     */
     update(email: string, username: string, password: string): Observable<void> {
     const user = this.firebaseAuth.currentUser;
     if (!user) {
@@ -90,7 +106,7 @@ export class AuthService {
     const updatePromises: Promise<void>[] = [];
     const updateData: { email?: string, username?: string } = {};
 
-    // email update
+    // Email update
     if (email && email !== user.email) {
       const credentials = EmailAuthProvider.credential(user.email!, password);
 
@@ -104,13 +120,13 @@ export class AuthService {
       updatePromises.push(emailUpdatePromise);
     }
 
-    // username update
+    // Username update
     if (username && username !== user.displayName) {
       updatePromises.push(updateProfile(user, { displayName: username }));
       updateData.username = username;
     }
 
-    // password update
+    // Password update
     if (password) {
       updatePromises.push(updatePassword(user, password));
     }

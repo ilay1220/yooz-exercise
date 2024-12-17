@@ -14,6 +14,7 @@ import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-login',
+  // List of required Angular modules and material components
   imports: [ReactiveFormsModule,
     CommonModule,
     MatCardModule,
@@ -21,23 +22,30 @@ import { MatError } from '@angular/material/form-field';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-  authService = inject(AuthService);
-  fb = inject(FormBuilder);
-  router = inject(Router);
-  errorMessage: string | null = null;
 
+export class LoginComponent 
+{
+  // Inject required services using Angular's Dependency Injection
+  authService = inject(AuthService); // Service for handling authentication logic
+  fb = inject(FormBuilder); // FormBuilder for making forms
+  router = inject(Router); // Router for navigation after loginning in
+  errorMessage: string | null = null; // Holds error messages to display to the user
+
+  // A reactive form group with email and password fields
   form = this.fb.nonNullable.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
 
+  // Handles form submission
   onSubmit() {
-    console.log("here");
-    const rawForm = this.form.getRawValue();
-    this.errorMessage = null; 
+    const rawForm = this.form.getRawValue(); // Get form values
+    this.errorMessage = null; // Clears previous errors
+
+     // Calls the login method from AuthService with email and password
     this.authService.login(rawForm.email, rawForm.password)
       .subscribe({
+        // Navigate to 'to-do-list' page after successful login
         next: () => this.router.navigateByUrl('/to-do-list'),
         error: (err) => {
           console.error('Login error:', err);
@@ -46,8 +54,10 @@ export class LoginComponent {
       });
   }
 
+  // Handles Google login using AuthService
   onGoogleLogin() {
     this.authService.loginWithGoogle().subscribe({
+      // Navigate to 'to-do-list' page after successful login
       next: () => this.router.navigateByUrl('/to-do-list'),
       error: (err) => {
         console.error('Google login error:', err);
@@ -56,6 +66,7 @@ export class LoginComponent {
     });
   }
 
+  // Translates Firebase authentication error codes into user-friendly messages.
   private getErrorMessage(error: any): string {
     if (error?.code === 'auth/user-not-found') {
       return 'No user found with this email.';

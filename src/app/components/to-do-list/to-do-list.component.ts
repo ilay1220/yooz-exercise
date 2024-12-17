@@ -42,14 +42,17 @@ import { MatNativeDateModule } from '@angular/material/core';
   styleUrls: ['./to-do-list.component.scss']
 })
 export class ToDoListComponent implements OnInit {
-  selectedStatus: string = 'all';
-  authService = inject(AuthService);
-  firestore = inject(Firestore);
-  filteredTasks: any[] = [];
+  selectedStatus: string = 'all'; // Current status filter
+  authService = inject(AuthService); // List of tasks
+  firestore = inject(Firestore); // Filtered tasks list
+  filteredTasks: any[] = []; // Controls task creation form visibility
   showStatusOptions = false;
   tasks: any[] = [];
   isAddingTask = false;  
-  newTask: any = {       
+  
+  // New task object
+  newTask: any = 
+  {       
     name: '',
     description: '',
     due_date: null,
@@ -58,10 +61,12 @@ export class ToDoListComponent implements OnInit {
     time_zone: ''
   };
 
+  // Time options for selection
   hours: number[] = Array.from({ length: 24 }, (_, i) => i); 
   minutes: number[] = Array.from({ length: 60 }, (_, i) => i); 
   seconds: number[] = Array.from({ length: 60 }, (_, i) => i); 
 
+  // Initialize tasks on component load
   ngOnInit(): void {
     const now = new Date();
 
@@ -77,7 +82,7 @@ export class ToDoListComponent implements OnInit {
     });
   }
   
-
+  // Get tasks from Firestore
   async loadUserTasks(userId: string) {
     try {
       const q = query(collection(this.firestore, 'missions'), where('user_pid', '==', userId));
@@ -86,18 +91,20 @@ export class ToDoListComponent implements OnInit {
       this.tasks = querySnapshot.docs.map(doc => {
         const taskData = doc.data();
   
-        // המרת תאריך יעד אם הוא ב- Timestamp
-        if (taskData['due_date'] instanceof Timestamp) {
+        // Checks if the 'due_date' is a Timestamp
+        if (taskData['due_date'] instanceof Timestamp)
+        {
           taskData['due_date'] = taskData['due_date'].toDate();
-        } else if (typeof taskData['due_date'] === 'string') {
-          taskData['due_date'] = new Date(taskData['due_date']); // המרה אם מדובר במחרוזת
+        } 
+        else if (typeof taskData['due_date'] === 'string') 
+        {
+          taskData['due_date'] = new Date(taskData['due_date']);  // Convert it if it's a string
         }
   
-        // עדכון ערכי זמן (שעה, דקה, שנייה)
+        // Update the task variables
         taskData['due_hours'] = taskData['due_date'].getHours();
         taskData['due_minutes'] = taskData['due_date'].getMinutes();
-        taskData['due_seconds'] = taskData['due_date'].getSeconds();
-  
+        taskData['due_seconds'] = taskData['due_date'].getSeconds();  
         taskData['isEditingName'] = false;
         taskData['status'] = taskData['status'];
         taskData['id'] = doc.id;
@@ -113,14 +120,19 @@ export class ToDoListComponent implements OnInit {
     }
   }  
 
+  // Filter tasks based on selected status
   filterTasks() {
-    if (this.selectedStatus === 'all') {
+    if (this.selectedStatus === 'all') 
+    {
       this.filteredTasks = [...this.tasks]; // show all tasks
-    } else {
+    } 
+    else 
+    {
       this.filteredTasks = this.tasks.filter(task => task.status === this.selectedStatus);
     }
   }
 
+  // Enable adding a task
   addTask() {
     console.log(`Adding task`)
     this.isAddingTask = true;
@@ -179,6 +191,7 @@ export class ToDoListComponent implements OnInit {
     this.updateTask(task);
   }
   
+  // Update task time fields
   onTimeChange(task: any) {
     if (task.due_date && task.due_hours != null && task.due_minutes != null && task.due_seconds != null) {
       const dueDate = new Date(task.due_date);
@@ -247,6 +260,7 @@ export class ToDoListComponent implements OnInit {
     }
   }
 
+  // Update Firestore task document
   async updateTask(task: any) {
     try {
       const taskDoc = doc(this.firestore, 'missions', task.id);
@@ -256,7 +270,7 @@ export class ToDoListComponent implements OnInit {
         name: task.name,
         description: task.description,
         status: task.status,
-        due_date: task.due_date ? new Date(task.due_date) : null, // שימוש בオブייקט Date חדש
+        due_date: task.due_date ? new Date(task.due_date) : null,
         time_zone: task.time_zone || userTimeZone,
       };
   

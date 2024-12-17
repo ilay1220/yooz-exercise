@@ -1,16 +1,22 @@
+<!-- Main game container, visible when the game is active and not over -->
 <div class="game-container rtl-content" *ngIf="!isGameOver; else gameOverTemplate">
   <div class="game-header">
+    <!-- Pause button: visible only when the game is not paused -->
     <button mat-fab color="primary" class="pause-button" (click)="pauseGame()" *ngIf="!isPaused">
       <mat-icon>pause</mat-icon>
     </button>
   </div>
 
+  <!-- Game title and question counter -->
   <h1 class="mat-display-1">ברוכים הבאים לשאלון!</h1>
   <h2 class="mat-headline">שאלה {{ currentQuestionIndex + 1 }} מתוך {{ questions.length }}</h2>
   
+  <!-- Main game content: Displays question and options when the game is not paused -->
   <div *ngIf="!isPaused" class="game-content">
+    <!-- Display the current question -->
     <h3 class="mat-title">{{ questions[currentQuestionIndex]?.question }}</h3>
   
+    <!-- List of answer options -->
     <mat-list class="options-list">
       <mat-list-item
         *ngFor="let option of questions[currentQuestionIndex]?.options"
@@ -21,12 +27,14 @@
       </mat-list-item>
     </mat-list>
   
+    <!-- Timer and score display -->
     <div class="timer-score mat-typography">
       <p class="timer">זמן נותר: {{ timeLeft }} שניות</p>
       <p class="score">ניקוד: {{ score }}</p>
     </div>
   </div>
 
+  <!-- Overlay displayed when the game is paused -->
   <div *ngIf="isPaused" class="paused-overlay">
     <div class="paused-content">
       <mat-icon class="pause-icon">pause_circle</mat-icon>
@@ -39,6 +47,7 @@
   </div>
 </div>
 
+<!-- Template displayed when the game is over -->
 <ng-template #gameOverTemplate>
   <div class="game-over">
     <h1 class="mat-display-2">המשחק נגמר!</h1>

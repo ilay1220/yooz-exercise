@@ -19,14 +19,15 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class PuzzleGameComponent implements OnInit, OnDestroy {
-  currentQuestionIndex = 0;
-  score = 0;
-  timeLeft = 30; 
-  timer: any;
-  isGameOver = false;
-  isPaused = false;
-  remainingTimeBeforePause = 0;
+  currentQuestionIndex = 0; // Index of the current question
+  score = 0;  // Stores the player's score
+  timeLeft = 20; // Remaining time for the current question
+  timer: any; // Timer reference for paused game control
+  isGameOver = false; // Tracks if the game is over
+  isPaused = false; // Tracks if the game is paused
+  remainingTimeBeforePause = 0; // Stores the remaining time before pause
 
+  // Array of game questions
   questions: Array<{
     question: string;
     answer: number | string;
@@ -56,40 +57,51 @@ export class PuzzleGameComponent implements OnInit, OnDestroy {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
+    // Start the timer when the game initializes
     this.startTimer();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void 
+  {
+    // Clear the timer to prevent memory leaks
     if (this.timer) {
       clearInterval(this.timer);
     }
   }
 
-  startTimer(): void {
+  // Starts the countdown timer for each question
+  startTimer(): void 
+  {
     this.timer = setInterval(() => {
       if (this.timeLeft > 0 && !this.isPaused) {
         this.timeLeft--; 
       } else if (this.timeLeft <= 0) {
+        // Continue if time runs out
         this.checkAnswer(null);
       }
     }, 1000);
   }
 
+  // Pauses the game and stops the timer
   pauseGame(): void {
     this.isPaused = true;
     this.remainingTimeBeforePause = this.timeLeft;
     clearInterval(this.timer);
   }
 
+  // Resumes the game and restarts the timer
   resumeGame(): void {
     this.isPaused = false;
     this.startTimer();
   }
 
+  // Checks the player's selected answer
   checkAnswer(selectedOption: any): void {
     clearInterval(this.timer);
 
+    // Check if the selected option matches the correct answer
     const currentQuestion = this.questions[this.currentQuestionIndex];
     if (selectedOption === currentQuestion.answer) {
       this.score += 10;
@@ -101,19 +113,21 @@ export class PuzzleGameComponent implements OnInit, OnDestroy {
       this.snackBar.open('תשובה שגויה! נסה שוב.', 'סגור', { duration: 2000, panelClass: ['custom-snackbar'] });
     }
 
+    // Move to the next question or end the game
     this.currentQuestionIndex++;
     if (this.currentQuestionIndex < this.questions.length) {
-      this.timeLeft = 30; 
+      this.timeLeft = 20; 
       this.startTimer();
     } else {
       this.isGameOver = true;
     }
   }
 
+  // Resets the game to its starting state
   resetGame(): void {
     this.currentQuestionIndex = 0;
     this.score = 0;
-    this.timeLeft = 30;
+    this.timeLeft = 20;
     this.isGameOver = false;
     this.isPaused = false;
     this.startTimer();

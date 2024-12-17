@@ -16,17 +16,21 @@ import { MatError } from '@angular/material/form-field';
   styleUrl: './update.component.scss'
 })
 export class UpdateComponent implements OnInit {
+  // Injecti all of the required services
   authService = inject(AuthService);
   fb = inject(FormBuilder);
   router = inject(Router);
+
   errorMessage: string | null = null;
 
+  // Form group initialization
   form = this.fb.nonNullable.group({
-    username: [`${this.authService.firebaseAuth.currentUser?.displayName}`, Validators.required],
-    email: [`${this.authService.firebaseAuth.currentUser?.email}`, Validators.required],
-    password: ['', Validators.required],
+    username: [`${this.authService.firebaseAuth.currentUser?.displayName}`, Validators.required], // Username field
+    email: [`${this.authService.firebaseAuth.currentUser?.email}`, Validators.required], // Email field 
+    password: ['', Validators.required], // Password field
   });
 
+  // Update form with current user data
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       if (user) {
@@ -38,13 +42,13 @@ export class UpdateComponent implements OnInit {
     });
   }
 
+  // Submit update form
   onSubmit() {
-    console.log("here");
     const rawForm = this.form.getRawValue();
     this.errorMessage = null;
     this.authService.update(rawForm.email, rawForm.username, rawForm.password)
       .subscribe({
-        next: () => this.router.navigateByUrl('/login'),
+        next: () => this.router.navigateByUrl('/login'), // Navigate to login on success
         error: (err) => {
           console.error('Update error:', err);
           this.errorMessage = err.text;

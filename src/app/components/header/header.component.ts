@@ -21,14 +21,22 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class HeaderComponent {
   title = 'Yooz App';
-  authService = inject(AuthService);
 
+  // Inject required services
+  authService = inject(AuthService);
   constructor(private router: Router, private cdRef: ChangeDetectorRef) {}
 
+  /**
+   * Navigate to a specific route.
+   * @param path - Path to navigate to
+   */
   navigateTo(path: string) {
     this.router.navigate([`/${path}`]);
   }
 
+  /**
+   * Logs the user out and navigates to the login page.
+   */
   logout() {
     this.authService.logout().subscribe({
       next: () => {

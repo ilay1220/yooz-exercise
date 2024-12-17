@@ -1,3 +1,6 @@
+<div>
+  <button mat-raised-button (click)="addTask()">הוסף משימה</button>
+</div>
 <div *ngIf="isAddingTask" class="add-task-form">
   <h3>הוסף משימה חדשה</h3>
   <mat-form-field>
@@ -53,8 +56,9 @@
 
 <div *ngIf="tasks.length > 0">
   <h3 mat-header>המשימות שלי</h3>
+  <h4 mat-header style="color: brown;">לחץ פעמיים על השם או על התיאור של כל משימה בשביל לשנות אותה</h4>
   <div>
-    <mat-form-field>
+    <mat-form-field class="filterSelector">
       <mat-label>פילטר:</mat-label>
       <mat-select id="statusFilter" [(ngModel)]="selectedStatus" (selectionChange)="filterTasks()">
         <mat-option value="all">הכל</mat-option>
@@ -130,9 +134,4 @@
       </mat-card-content>
     </mat-card>    
   </div>
-</div>
-
-
-<div>
-  <button mat-raised-button (click)="addTask()">הוסף משימה</button>
 </div>

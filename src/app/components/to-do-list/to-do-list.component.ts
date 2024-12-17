@@ -64,10 +64,11 @@ export class ToDoListComponent implements OnInit {
 
   ngOnInit(): void {
     const now = new Date();
-    this.newTask.due_hours = now.getHours(); 
-    this.newTask.due_minutes = now.getMinutes(); 
-    this.newTask.due_seconds = now.getSeconds(); 
-  
+
+    this.newTask.due_hours = 0; 
+    this.newTask.due_minutes = 0; 
+    this.newTask.due_seconds = 0; 
+
     this.authService.user$.subscribe(user => {
       if (user) {
         this.loadUserTasks(user.uid);
@@ -245,8 +246,6 @@ export class ToDoListComponent implements OnInit {
       console.error('Error adding task:', error);
     }
   }
-  
-  
 
   async updateTask(task: any) {
     try {
@@ -257,13 +256,13 @@ export class ToDoListComponent implements OnInit {
         name: task.name,
         description: task.description,
         status: task.status,
-        due_date: task.due_date ? task.due_date.toISOString() : null,
-        time_zone: task.time_zone,
+        due_date: task.due_date ? new Date(task.due_date) : null, // שימוש בオブייקט Date חדש
+        time_zone: task.time_zone || userTimeZone,
       };
   
       await updateDoc(taskDoc, updatedData);
     } catch (error) {
       console.error('Error updating task:', error);
     }
-  }  
+  }
 }

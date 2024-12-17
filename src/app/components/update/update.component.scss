@@ -1,19 +1,19 @@
-.signup-container {
+.update-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #1e2a47; 
+    background-color: #1e2a47;
   }
   
-  .signup-card {
+  .update-card {
     width: 100%;
     max-width: 500px;
     padding: 40px;
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    color: #333333;
+    color: #333;
     animation: fadeIn 0.5s ease;
   }
   
@@ -22,7 +22,7 @@
     100% { opacity: 1; }
   }
   
-  .signup-title {
+  .update-title {
     text-align: center;
     font-size: 36px;
     font-weight: 700;
@@ -36,7 +36,7 @@
     margin-bottom: 25px;
     position: relative;
   }
-
+  
   mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #f5f5f5;
     border-radius: 12px;
@@ -62,7 +62,7 @@
   
   mat-form-field.mat-form-field-appearance-fill .mat-input-element:focus {
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(3, 169, 244, 0.5); // Blue glow on focus
+    box-shadow: 0 0 8px rgba(3, 169, 244, 0.5); /* Blue glow on focus */
   }
   
   button {
@@ -77,47 +77,21 @@
     margin-top: 30px;
   }
   
-  .signup-btn {
+  .update-btn {
     background-color: #4caf50;
     color: white;
     border-radius: 10px;
     transition: background-color 0.3s, box-shadow 0.3s ease, transform 0.3s ease;
   }
   
-  .signup-btn:hover {
+  .update-btn:hover {
     background-color: #45a049;
     box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
     transform: translateY(-3px);
   }
   
-  .google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ff3d6d;
-    color: white;
-    border-radius: 30px;
-    font-size: 18px;
-    padding: 14px 30px;
-    width: 100%;
-    box-shadow: 0 10px 20px rgba(255, 61, 109, 0.4);
-    transition: all 0.3s ease;
-  }
-  
-  .google-btn:hover {
-    background-color: #f44336;
-    box-shadow: 0 15px 30px rgba(255, 61, 109, 0.5);
-    transform: translateY(-3px);
-  }
-  
-  .google-logo {
-    margin-right: 12px;
-    width: 24px;
-    height: 24px;
-  }
-  
   .error-message {
-    color: #ff3d6d;
+    color: #ff3d6d; /* red for error */
     text-align: center;
     font-size: 14px;
     margin-top: 12px;
@@ -129,60 +103,32 @@
     color: #4f5b6a;
   }
   
-  @media screen and (max-width: 600px) {
-    .signup-card {
-      padding: 20px;
-    }
-  
-    .signup-title {
-      font-size: 28px;
-    }
-  
-    .form-field {
-      margin-bottom: 15px;
-    }
-  
-    button {
-      font-size: 16px;
-      padding: 12px;
-    }
-  
-    .google-btn {
-      font-size: 16px;
-      padding: 12px 20px;
-    }
-  }
-  
-  .usernameInput, .emailInput, .passInput {
+  .emailInput, .passInput, .usernameInput {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
-    border: 2px solid #fff;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #ffffff !important;;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #2b8ab9;
+    color: #ffffff;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     outline: none;
     transition: all 0.3s ease;
   }
-
-  .matInput {
-    color: white;
-  }
   
-  .usernameInput:focus, .emailInput:focus, .passInput:focus {
+  .emailInput:focus, .passInput:focus, .usernameInput:focus {
     border-color: #0ff;
-    box-shadow: 0 0 20px #0ff;
+    box-shadow: 0 0 8px #0ff;
     transform: scale(1.05);
   }
   
-  .usernameInput::placeholder, .emailInput::placeholder, .passInput::placeholder {
+  .emailInput::placeholder, .passInput::placeholder, .usernameInput::placeholder {
     color: rgba(255, 255, 255, 0.6);
     transition: color 0.3s ease;
   }
   
-  .usernameInput:focus::placeholder, .emailInput:focus::placeholder, .passInput:focus::placeholder {
+  .emailInput:focus::placeholder, .passInput:focus::placeholder, .usernameInput:focus::placeholder {
     color: #0ff;
   }
   
@@ -196,11 +142,5 @@
     height: 100vh;
     margin: 0;
     flex-direction: column;
-  }
-  
-  h1 {
-    font-size: 36px;
-    margin-bottom: 30px;
-    color: #0ff;
   }
   
